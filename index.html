@@ -1,75 +1,67 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Reports Home</title>
-    <style>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif; /* Modern font fallback */
-    background: #f5f7fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
+  <title>Reports Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-  .container {
-    width: 90%;
-    max-width: 400px;
-    background: white; /* Optional: adds a card-like feel */
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    
-    /* This creates the perfect symmetry */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; 
-  }
+    .container {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  h2 {
-    margin: 0 0 10px 0; /* Keeps heading spacing consistent */
-    color: #333;
-    font-size: 22px;
-    text-align: center;
-  }
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
 
-  button {
-    width: 100%;
-    padding: 16px;
-    margin: 0; /* Removed margin to let 'gap' handle spacing */
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 12px;
-    background: #2d7ff9;
-    color: white;
-    box-shadow: 0 4px 12px rgba(45, 127, 249, 0.2);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
+    button {
+      width: 100%;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #2d7ff9;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: block;
+    }
 
-  button:active {
-    transform: scale(0.97);
-    background: #1f66d1;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-</style>
+    button:active {
+      transform: scale(0.98);
+      background: #1f66d1;
+    }
+  </style>
 </head>
 
 <body>
-    <h2 align= "center">Select Report</h2></n>
+  <div class="container">
+    <h2>Select Report</h2>
+
     <button onclick="go('pH.html')">Bath pH</button>
     <button onclick="go('Density.html')">Bath Density</button>
     <button onclick="go('CCHpage.html')">Bath Chemical Composition</button>
     <button onclick="go('etp.html')">ETP</button>
-    <button onclick="go('raw.html')">Raw Materials</button>
+    <button onclick="go('silver.html')">Raw Materials</button>
+  </div>
 
-    <script>
-        function go(page) { window.location.href = page; }
-    </script>
+  <script>
+    function go(page) {
+      window.location.href = page;
+    }
+  </script>
 </body>
-
 </html>
-
