@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Barrel – Copper Bath</title>
+  <style>
+    input, button { width:100%; padding:10px; margin:5px 0; font-size:16px; }
+    .box { border:1px solid #000; padding:10px; margin:10px 0; }
+  </style>
+</head>
+<body>
+
+<h2 align="center">Copper Bath</h2>
+
+<label>Date:</label>
+<input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+
+<label>Time:</label>
+<input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+<br><br>
+
+<div class="box">
+  <h3>Copper Calculation</h3>
+  Sample Volume:
+  <input id="cu_sample" value="2">
+
+  EDTA Concentration:
+  <input id="edta_conc" value="0.01">
+
+  EDTA Volume:
+  <input id="edta_vol">
+
+  <button onclick="calcCopper()">Calculate Copper</button>
+  <div id="cu_result"></div>
+  <input type="hidden" id="cu_final">
+</div>
+
+<div class="box">
+  <h3>Free NaCN Calculation</h3>
+  Sample Volume:
+  <input id="cn_sample" value="2">
+
+  AgNO3 Concentration:
+  <input id="agno3_conc" value="0.01">
+
+  AgNO3 Volume:
+  <input id="agno3_vol">
+
+  <button onclick="calcNaCN()">Calculate NaCN</button>
+  <div id="cn_result"></div>
+  <input type="hidden" id="cn_final">
+</div>
+
+<button onclick="submitData()">Submit to Sheet</button>
+
+<script>
+function formatDate(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+  if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
+  input.value = v;
+}
+
+function formatTime(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+  input.value = v;
+}
+
+function calcCopper(){
+  const sample = parseFloat(cu_sample.value);
+  const conc = parseFloat(edta_conc.value);
+  const vol = parseFloat(edta_vol.value);
+
+  const result = conc * vol * 63.55 / sample;
+  const final = result.toFixed(3);
+
+  cu_result.innerHTML = "Copper Content: " + final + " g/L";
+  cu_final.value = final;
+}
+
+function calcNaCN(){
+  const sample = parseFloat(cn_sample.value);
+  const conc = parseFloat(agno3_conc.value);
+  const vol = parseFloat(agno3_vol.value);
+
+  const result = conc * vol * 49 * 2 / sample;
+  const final = result.toFixed(3);
+
+  cn_result.innerHTML = "Free NaCN: " + final + " g/L";
+  cn_final.value = final;
+}
+
+function submitData(){
+  const data = {
+    sheet: "Chem_Barrel_Copper",
+    date: date.value,
+    time: time.value,
+
+    cu_sample: cu_sample.value,
+    edta_conc: edta_conc.value,
+    edta_vol: edta_vol.value,
+    copper_result: cu_final.value,
+
+    cn_sample: cn_sample.value,
+    agno3_conc: agno3_conc.value,
+    agno3_vol: agno3_vol.value,
+    nacn_result: cn_final.value
+  };
+
+  fetch("YOUR_SCRIPT_URL",{
+    method:"POST",
+    body: JSON.stringify(data)
+  })
+  .then(r=>r.text())
+  .then(t=>alert("Saved to Sheet"));
+}
+</script>
+
+</body>
+</html>

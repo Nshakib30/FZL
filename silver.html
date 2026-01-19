@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>White Bronze Bath</title>
+    <style>
+        input,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 id="title">White Bronze Bath</h2>
+
+    <label>Date:</label>
+    <input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+
+    <label>Time:</label>
+    <input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+    <br><br>
+
+    <div class="box">
+        <h3>Copper</h3>
+        Sample Volume:<input id="cu_sample" value="2">
+        EDTA Conc:<input id="edta_conc" value="0.01">
+        EDTA Volume:<input id="edta_vol">
+        <button onclick="calcCopper()">Calculate Copper</button>
+        <div id="cu_result"></div>
+        <input type="hidden" id="cu_final">
+    </div>
+
+    <div class="box">
+        <h3>Zinc</h3>
+        Sample Volume:<input id="zn_sample" value="2">
+        EDTA Conc:<input id="zn_edta_conc" value="0.01">
+        EDTA Volume:<input id="zn_edta_vol">
+        <button onclick="calcZinc()">Calculate Zinc</button>
+        <div id="zn_result"></div>
+        <input type="hidden" id="zn_final">
+    </div>
+
+    <div class="box">
+        <h3>Free NaCN</h3>
+        Sample Volume:<input id="cn_sample" value="2">
+        AgNO3 Conc:<input id="agno3_conc" value="0.01">
+        AgNO3 Volume:<input id="agno3_vol">
+        <button onclick="calcNaCN()">Calculate NaCN</button>
+        <div id="cn_result"></div>
+        <input type="hidden" id="cn_final">
+    </div>
+
+    <button onclick="submitData()">Submit to Sheet</button>
+
+    <script>
+        // bath selector
+        const params = new URLSearchParams(window.location.search);
+        const bathName = params.get("bath") || "WB1_Barrel";
+        document.getElementById("title").innerText = "White Bronze Bath – " + bathName;
+
+        // formatting
+        function formatDate(i) {
+            let v = i.value.replace(/\D/g, '');
+            if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+            if (v.length >= 6) v = v.slice(0, 5) + '/' + v.slice(5, 9);
+            i.value = v;
+        }
+        function formatTime(i) {
+            let v = i.value.replace(/\D/g, '');
+            if (v.length >= 3) v = v.slice(0, 2) + ':' + v.slice(2, 4);
+            i.value = v;
+        }
+
+        // calculations
+        function calcCopper() {
+            const r = edta_conc.value * edta_vol.value * 63.55 / cu_sample.value;
+            cu_final.value = r.toFixed(3);
+            cu_result.innerHTML = "Copper: " + cu_final.value + " g/L";
+        }
+
+        function calcZinc() {
+            const r = zn_edta_conc.value * zn_edta_vol.value * 65.38 / zn_sample.value;
+            zn_final.value = r.toFixed(3);
+            zn_result.innerHTML = "Zinc: " + zn_final.value + " g/L";
+        }
+
+        function calcNaCN() {
+            const r = agno3_conc.value * agno3_vol.value * 49 * 2 / cn_sample.value;
+            cn_final.value = r.toFixed(3);
+            cn_result.innerHTML = "Free NaCN: " + cn_final.value + " g/L";
+        }
+
+        // submit
+        function submitData() {
+            const data = {
+                sheet: "Chem_WhiteBronze",
+                bath_name: bathName,
+                date: date.value,
+                time: time.value,
+                copper: cu_final.value,
+                zinc: zn_final.value,
+                nacn: cn_final.value
+            };
+
+            fetch("YOUR_SCRIPT_URL", {
+                method: "POST",
+                body: JSON.stringify(data)
+            })
+                .then(r => r.text())
+                .then(t => alert("Saved"));
+        }
+    </script>
+
+</body>
+
+</html>

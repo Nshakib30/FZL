@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Barrel – Acid Tin Bath</title>
+    <style>
+        input,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Barrel – Acid Tin Bath</h2>
+
+    <label>Date:</label>
+    <input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+    <label>Time:</label>
+    <input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+    <br><br>
+
+    <div class="box">
+        <h3>Tin (Sn)</h3>
+        Sample Volume:<input id="sn_sample" value="2">
+        I₂ Concentration:<input id="i2_conc" value="0.05">
+        I₂ Volume:<input id="i2_vol">
+        <button onclick="calcTin()">Calculate Tin</button>
+        <div id="sn_result" style="display:none;"></div>
+        <input type="hidden" id="sn_final">
+    </div>
+
+    <div class="box">
+        <h3>Sulfuric Acid (H₂SO₄)</h3>
+        Sample Volume:<input id="sul_sample" value="5">
+        NaOH Concentration:<input id="naoh_conc" value="1">
+        NaOH Volume:<input id="naoh_vol">
+        <button onclick="calcSulfuric()">Calculate H₂SO₄</button>
+        <div id="sul_result" style="display:none;"></div>
+        <input type="hidden" id="sul_final">
+    </div>
+
+    <button onclick="submitData()">Submit to Sheet</button>
+
+    <script>
+        function formatDate(i) {
+            let v = i.value.replace(/\D/g, '');
+            if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+            if (v.length >= 6) v = v.slice(0, 5) + '/' + v.slice(5, 9);
+            i.value = v;
+        }
+        function formatTime(i) {
+            let v = i.value.replace(/\D/g, '');
+            if (v.length >= 3) v = v.slice(0, 2) + ':' + v.slice(2, 4);
+            i.value = v;
+        }
+
+        function calcTin() {
+            const r = i2_conc.value * i2_vol.value * 118.71 / sn_sample.value;
+            sn_final.value = r.toFixed(3);
+            sn_result.innerHTML = "Tin: " + sn_final.value + " g/L";
+            sn_result.style.display = "block";
+        }
+
+        function calcSulfuric() {
+            const r = naoh_conc.value * naoh_vol.value * 98 / (sul_sample.value * 2);
+            sul_final.value = r.toFixed(3);
+            sul_result.innerHTML = "H₂SO₄: " + sul_final.value + " g/L";
+            sul_result.style.display = "block";
+        }
+
+        function submitData() {
+            const data = {
+                sheet: "Chem_Barrel_AcidTin",
+                date: date.value,
+                time: time.value,
+                tin: sn_final.value,
+                sulfuric: sul_final.value
+            };
+
+            fetch("YOUR_SCRIPT_URL", {
+                method: "POST",
+                body: JSON.stringify(data)
+            })
+                .then(r => r.text())
+                .then(t => alert("Saved"));
+        }
+    </script>
+
+</body>
+
+</html>

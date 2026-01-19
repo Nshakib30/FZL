@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ETP Report</title>
+
+    <label>Date:</label>
+<input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+
+<label>Time:</label>
+<input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+<br><br>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        input {
+            width: 90%;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>ETP Parameters</h2>
+
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Input</th>
+            <th>Output</th>
+        </tr>
+        <tr>
+            <td>pH</td>
+            <td><input id="ph_in"></td>
+            <td><input id="ph_out"></td>
+        </tr>
+        <tr>
+            <td>DO</td>
+            <td><input id="do_in"></td>
+            <td><input id="do_out"></td>
+        </tr>
+        <tr>
+            <td>EC</td>
+            <td><input id="ec_in"></td>
+            <td><input id="ec_out"></td>
+        </tr>
+    </table>
+
+    <button onclick="submitData()">Submit</button>
+
+    <script>
+
+        function formatDate(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+  if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
+  input.value = v;
+}
+
+function formatTime(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+  input.value = v;
+}
+
+        function submitData() {
+            const data = {
+                date: date.value,
+                time: time.value,
+                sheet: "ETP",
+                ph_in: ph_in.value,
+                ph_out: ph_out.value,
+                do_in: do_in.value,
+                do_out: do_out.value,
+                ec_in: ec_in.value,
+                ec_out: ec_out.value
+            };
+
+            fetch("YOUR_SCRIPT_URL", {
+                method: "POST",
+                body: JSON.stringify(data)
+            })
+                .then(r => r.text())
+                .then(t => alert("Saved"));
+        }
+    </script>
+
+</body>
+
+</html>

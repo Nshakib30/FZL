@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bath pH</title>
+  <style>
+    table { width:100%; border-collapse:collapse; text-align:center; }
+    th, td { border:1px solid black; padding:8px; }
+    input { width:90%; font-size:14px; }
+    button { width:100%; padding:15px; font-size:18px; margin-top:15px; }
+  </style>
+</head>
+<body>
+
+<h2>Bath pH Report</h2>
+
+<label>Date:</label>
+<input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+
+<label>Time:</label>
+<input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+<br><br>
+
+
+<br><br>
+
+
+<table>
+  <tr>
+    <th>Bath</th>
+    <th>Barrel</th>
+    <th>Hanger</th>
+  </tr>
+
+  <tr>
+    <td>Copper</td>
+    <td><input id="copper_barrel"></td>
+    <td><input id="copper_hanger"></td>
+  </tr>
+
+  <tr>
+    <td>Shiny Copper</td>
+    <td><input id="shiny_barrel"></td>
+    <td>-</td>
+  </tr>
+
+  <tr>
+    <td>Golden 1</td>
+    <td><input id="gold1_barrel"></td>
+    <td rowspan="2"><input id="gold_hanger"></td>
+  </tr>
+  <tr>
+    <td>Golden 2</td>
+    <td><input id="gold2_barrel"></td>
+  </tr>
+
+  <tr>
+    <td>Gun Metal</td>
+    <td><input id="gun_barrel"></td>
+    <td><input id="gun_hanger"></td>
+  </tr>
+
+  <tr>
+    <td>White Bronze 1</td>
+    <td><input id="wb1_barrel"></td>
+    <td rowspan="3"><input id="wb_hanger"></td>
+  </tr>
+  <tr>
+    <td>White Bronze 2</td>
+    <td><input id="wb2_barrel"></td>
+  </tr>
+  <tr>
+    <td>White Bronze 3</td>
+    <td><input id="wb3_barrel"></td>
+  </tr>
+
+  <tr>
+    <td>Rose Gold</td>
+    <td>-</td>
+    <td><input id="rose_hanger"></td>
+  </tr>
+</table>
+
+
+
+
+<button onclick="submitData()">Submit</button>
+
+<script>
+
+function formatDate(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+  if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
+  input.value = v;
+}
+
+function formatTime(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+  input.value = v;
+}
+
+function submitData(){
+  const data = {
+    sheet:"Bath_pH",
+    date: date.value,
+    time: time.value,
+    copper_barrel:copper_barrel.value,
+    copper_hanger:copper_hanger.value,
+    shiny_barrel:shiny_barrel.value,
+    gold1_barrel:gold1_barrel.value,
+    gold2_barrel:gold2_barrel.value,
+    gold_hanger:gold_hanger.value,
+    gun_barrel:gun_barrel.value,
+    gun_hanger:gun_hanger.value,
+    wb1_barrel:wb1_barrel.value,
+    wb2_barrel:wb2_barrel.value,
+    wb3_barrel:wb3_barrel.value,
+    wb_hanger:wb_hanger.value,
+    rose_hanger:rose_hanger.value
+  };
+
+
+  fetch("YOUR_SCRIPT_URL",{
+    method:"POST",
+    body:JSON.stringify(data)
+  })
+  .then(r=>r.text())
+  .then(t=>alert("Saved"));
+}
+</script>
+
+</body>
+</html>
