@@ -250,8 +250,12 @@
     // --- 1. Dynamic Header Logic ---
     const params = new URLSearchParams(window.location.search);
     const bathName = params.get("bath") || "Golden Bath";
-    document.getElementById("headerTitle").innerText = bathName;
-
+// This keeps the main title and adds the specific bath name
+if (bathName !== "Golden Bath") {
+    document.getElementById("headerTitle").innerText = "Golden Bath – " + bathName;
+} else {
+    document.getElementById("headerTitle").innerText = "Golden Bath";
+}
     // --- 2. Formatters ---
     function formatDate(i){
       let v = i.value.replace(/\D/g,'');
@@ -351,3 +355,4 @@
 
 </body>
 </html>
+
