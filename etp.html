@@ -254,7 +254,7 @@
 }; // <--- You were missing this closing bracket for 'const data'
 
       // Add this part to actually SEND the data
-      fetch("https://script.google.com/a/macros/fortunezip.com/s/AKfycbxXeGNRiR_1OclV5w4MvFB3XyVirM94CzsndLOA3_TNCY49R_TV83AhoLffoXEioY4-/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec", {
         method: "POST",
         body: JSON.stringify(data)
       })
@@ -262,3 +262,4 @@
       .then(t => alert("Saved successfully!"))
       .catch(e => alert("Error: " + e));
     }
+
