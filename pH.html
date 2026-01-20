@@ -244,8 +244,8 @@
       </table>
 
       <div class="btn-row">
-        <button onclick="submitData()">Submit</button>
         <button onclick="goHome()" class="secondary">Home</button>
+        <button onclick="submitData()">Submit</button>
       </div>
 
     </div>
@@ -278,6 +278,7 @@
     }
 
     function submitData(){
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec";
       const data = {
         sheet: "Bath_pH",
         date: document.getElementById('date').value,
@@ -307,7 +308,29 @@
       .then(t => alert("Saved successfully!"))
       .catch(e => alert("Error: " + e));
     }
+
+    fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors", // <--- THIS IS THE MAGIC FIX
+        headers: {
+          "Content-Type": "text/plain"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        // With 'no-cors', we can't read the server response, 
+        // so we just assume it worked if no error occurred.
+        alert("Data sent! Check your Google Sheet.");
+        
+        // Optional: Clear inputs after save
+        // document.getElementById('ph_in').value = '';
+        // document.getElementById('ph_out').value = '';
+      })
+      .catch(e => alert("Error: " + e));
+    }
+    
   </script>
 
 </body>
 </html>
+
