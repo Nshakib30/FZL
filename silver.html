@@ -249,8 +249,14 @@
   <script>
     // --- 1. Dynamic Header Logic ---
     const params = new URLSearchParams(window.location.search);
-    const bathName = params.get("bath") || "WB1_Barrel";
-    document.getElementById("headerTitle").innerText = "White Bronze – " + bathName;
+    const bathName = params.get("bath") || "White Bronze Bath";
+
+    // Smart Title: If name is NOT just "White Bronze" or "White Bronze Bath", show full details
+    if (bathName !== "White Bronze" && bathName !== "White Bronze Bath") {
+        document.getElementById("headerTitle").innerText = "White Bronze Bath – " + bathName;
+    } else {
+        document.getElementById("headerTitle").innerText = "White Bronze Bath";
+    }
 
     // --- 2. Formatters ---
     function formatDate(i){
@@ -320,7 +326,7 @@
     }
 
     function submitData(){
-      // Optional check to ensure at least one value is calculated
+      // Optional safety check
       if(!document.getElementById('cu_final').value && 
          !document.getElementById('zn_final').value &&
          !document.getElementById('cn_final').value){
@@ -328,7 +334,7 @@
       }
 
       const data = {
-        sheet: "Chem_WhiteBronze",
+        sheet: "Chem_WhiteBronze", 
         bath_name: bathName,
         date: document.getElementById('date').value,
         time: document.getElementById('time').value,
