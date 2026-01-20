@@ -1,51 +1,168 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Bath Chemical Composition</title>
-    <style>
-        h3 {
-            margin-top: 25px;
-        }
+  <title>Bath Chemical Composition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef2f5;
+      
+      /* Vertical Centering & Width Fitting */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      
+      /* Minimal padding to maximize width on mobile */
+      padding: 8px;
+      box-sizing: border-box;
+    }
 
-        button {
-            width: 100%;
-            padding: 15px;
-            margin: 6px 0;
-            font-size: 16px;
-        }
-    </style>
+    .card {
+      width: 100%;
+      max-width: 500px; /* Slightly narrower for a menu feel */
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 95vh; /* Prevents it from being taller than screen */
+    }
+
+    .card-header {
+      background: #2d7ff9;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      flex-shrink: 0; /* Keeps header visible if scrolling */
+    }
+
+    .card-body {
+      padding: 20px;
+      overflow-y: auto; /* Allows scrolling if list is too long for small phones */
+    }
+
+    h3 {
+      margin: 0 0 15px 0;
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    /* Spacing between sections */
+    .section {
+      margin-bottom: 25px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: #2d7ff9;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background 0.2s, transform 0.1s;
+      text-align: left; /* Makes list scanning easier */
+      padding-left: 20px;
+      position: relative;
+    }
+
+    /* Add a small arrow to indicate navigation */
+    button::after {
+      content: '›';
+      position: absolute;
+      right: 20px;
+      font-size: 20px;
+      line-height: 18px;
+      opacity: 0.7;
+    }
+
+    button:active {
+      transform: scale(0.98);
+      background: #1f66d1;
+    }
+
+    /* Secondary button style for Home */
+    .btn-home {
+      background: #e0e0e0;
+      color: #333;
+      text-align: center;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+    .btn-home::after {
+      content: ''; /* No arrow for home button */
+    }
+    .btn-home:active {
+      background: #d4d4d4;
+    }
+
+  </style>
 </head>
 
 <body>
 
-    <h2>Bath Chemical Composition</h2>
+  <div class="card">
+    <div class="card-header">
+      Chemical Composition
+    </div>
 
-    <h3 align="center">Barrel</h3>
-    <button onclick="go('chem_barrel_copper.html')">Copper</button>
-    <button onclick="go('chem_barrel_shiny.html')">Shiny Copper</button>
-    <button onclick="go('chem_barrel_golden1.html')">Golden 1</button>
-    <button onclick="go('chem_barrel_golden2.html')">Golden 2</button>
-    <button onclick="go('chem_barrel_gunmetal.html')">Gun Metal</button>
-    <button onclick="go('chem_barrel_wb1.html')">White Bronze 1</button>
-    <button onclick="go('chem_barrel_wb2.html')">White Bronze 2</button>
-    <button onclick="go('chem_barrel_wb3.html')">White Bronze 3</button>
-    <button onclick="go('chem_barrel_acidtin.html')">Acid Tin</button>
+    <div class="card-body">
 
-    <h3 align="center">Hanger</h3>
-    <button onclick="go('chem_hanger_copper.html')">Copper</button>
-    <button onclick="go('chem_hanger_acidcopper.html')">Acid Copper</button>
-    <button onclick="go('chem_hanger_golden.html')">Golden</button>
-    <button onclick="go('chem_hanger_rosegold.html')">Rose Gold</button>
-    <button onclick="go('chem_hanger_gunmetal.html')">Gun Metal</button>
-    <button onclick="go('chem_hanger_whitebronze.html')">White Bronze</button>
+      <div class="section">
+        <h3>Barrel Process</h3>
+        <button onclick="go('chem_barrel_copper.html')">Copper</button>
+        <button onclick="go('chem_barrel_shiny.html')">Shiny Copper</button>
+        <button onclick="go('chem_barrel_golden1.html')">Golden 1</button>
+        <button onclick="go('chem_barrel_golden2.html')">Golden 2</button>
+        <button onclick="go('chem_barrel_gunmetal.html')">Gun Metal</button>
+        <button onclick="go('chem_barrel_wb1.html')">White Bronze 1</button>
+        <button onclick="go('chem_barrel_wb2.html')">White Bronze 2</button>
+        <button onclick="go('chem_barrel_wb3.html')">White Bronze 3</button>
+        <button onclick="go('chem_barrel_acidtin.html')">Acid Tin</button>
+      </div>
 
-    <script>
-        function go(page) {
-            window.location.href = page;
-        }
-    </script>
+      <div class="section">
+        <h3>Hanger Process</h3>
+        <button onclick="go('chem_hanger_copper.html')">Copper</button>
+        <button onclick="go('chem_hanger_acidcopper.html')">Acid Copper</button>
+        <button onclick="go('chem_hanger_golden.html')">Golden</button>
+        <button onclick="go('chem_hanger_rosegold.html')">Rose Gold</button>
+        <button onclick="go('chem_hanger_gunmetal.html')">Gun Metal</button>
+        <button onclick="go('chem_hanger_whitebronze.html')">White Bronze</button>
+      </div>
+
+      <button onclick="goHome()" class="btn-home">Home</button>
+
+    </div>
+  </div>
+
+  <script>
+    function go(page) {
+      window.location.href = page;
+    }
+    
+    function goHome(){
+       // Assuming your main menu is index.html
+       window.location.href = "index.html";
+    }
+  </script>
 
 </body>
-
 </html>
