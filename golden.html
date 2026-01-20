@@ -41,7 +41,7 @@
     .card-body {
       padding: 15px;
       max-height: 90vh;
-      overflow-y: auto; /* Allows scrolling if content gets too long */
+      overflow-y: auto;
     }
 
     /* Date/Time Section */
@@ -146,7 +146,7 @@
     }
 
     button.calc-btn {
-      background: #6c757d; /* Grey for calculation buttons */
+      background: #6c757d;
       font-size: 14px;
       padding: 10px;
     }
@@ -250,12 +250,14 @@
     // --- 1. Dynamic Header Logic ---
     const params = new URLSearchParams(window.location.search);
     const bathName = params.get("bath") || "Golden Bath";
-// This keeps the main title and adds the specific bath name
-if (bathName !== "Golden Bath") {
-    document.getElementById("headerTitle").innerText = "Golden Bath – " + bathName;
-} else {
-    document.getElementById("headerTitle").innerText = "Golden Bath";
-}
+
+    // If bathName is NOT "Golden" and NOT "Golden Bath", show the full name (e.g. "Golden Bath – Golden 1")
+    if (bathName !== "Golden" && bathName !== "Golden Bath") {
+        document.getElementById("headerTitle").innerText = "Golden Bath – " + bathName;
+    } else {
+        document.getElementById("headerTitle").innerText = "Golden Bath";
+    }
+
     // --- 2. Formatters ---
     function formatDate(i){
       let v = i.value.replace(/\D/g,'');
@@ -324,7 +326,7 @@ if (bathName !== "Golden Bath") {
     }
 
     function submitData(){
-      // Check if at least one calculation is done (optional check)
+      // Check if at least one calculation is done
       if(!document.getElementById('cu_final').value && 
          !document.getElementById('zn_final').value &&
          !document.getElementById('cn_final').value){
@@ -332,7 +334,7 @@ if (bathName !== "Golden Bath") {
       }
 
       const data = {
-        sheet: "Chem_Golden", // You can make this dynamic if needed
+        sheet: "Chem_Golden", 
         bath_name: bathName,
         date: document.getElementById('date').value,
         time: document.getElementById('time').value,
@@ -355,4 +357,3 @@ if (bathName !== "Golden Bath") {
 
 </body>
 </html>
-
