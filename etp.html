@@ -251,3 +251,14 @@
         do_out: document.getElementById('do_out').value,
         ec_in: document.getElementById('ec_in').value,
         ec_out: document.getElementById('ec_out').value
+}; // <--- You were missing this closing bracket for 'const data'
+
+      // Add this part to actually SEND the data
+      fetch("https://script.google.com/a/macros/fortunezip.com/s/AKfycbxXeGNRiR_1OclV5w4MvFB3XyVirM94CzsndLOA3_TNCY49R_TV83AhoLffoXEioY4-/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(r => r.text())
+      .then(t => alert("Saved successfully!"))
+      .catch(e => alert("Error: " + e));
+    }
