@@ -202,12 +202,6 @@
           </tr>
 
           <tr>
-            <td>Acid Copper</td>
-            <td class="dash">-</td>
-            <td><input id="acid_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
-          </tr>
-
-          <tr>
             <td>Golden 1</td>
             <td><input id="gold1_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
             <td rowspan="2"><input id="gold_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
@@ -280,7 +274,6 @@
     }
 
     function submitData(){
-      // I am using the URL you provided in your code
       const scriptURL = "https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec";
       
       const data = {
@@ -290,10 +283,11 @@
         
         copper_barrel: document.getElementById('copper_barrel').value,
         copper_hanger: document.getElementById('copper_hanger').value,
-        
         shiny_barrel: document.getElementById('shiny_barrel').value,
-        // Added this missing field
-        acid_hanger: document.getElementById('acid_hanger').value, 
+        
+        // We removed Acid Copper input, but we send a blank value "" 
+        // to ensure the Google Sheet columns don't shift.
+        acid_hanger: "", 
 
         gold1_barrel: document.getElementById('gold1_barrel').value,
         gold2_barrel: document.getElementById('gold2_barrel').value,
@@ -312,7 +306,6 @@
 
       console.log("Submitting:", data);
 
-      // Using the 'no-cors' method to fix the Fetch Error
       fetch(scriptURL, {
         method: "POST",
         mode: "no-cors",
@@ -322,8 +315,7 @@
         body: JSON.stringify(data)
       })
       .then(() => {
-        alert("Data sent! Check your Google Sheet.");
-        // Optional: location.reload(); 
+        alert("Data sent! Check your pH Sheet.");
       })
       .catch(e => alert("Error: " + e));
     }
