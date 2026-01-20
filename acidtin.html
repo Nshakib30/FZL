@@ -1,102 +1,325 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Barrel – Acid Tin Bath</title>
-    <style>
-        input,
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            font-size: 16px;
-        }
+  <title>Acid Tin Analysis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 8px;
+      box-sizing: border-box;
+    }
 
-        .box {
-            border: 1px solid #000;
-            padding: 10px;
-            margin: 10px 0;
-        }
-    </style>
+    .card {
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      background: #2d7ff9;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 15px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Date/Time Section */
+    .meta-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    
+    .meta-group {
+      flex: 1;
+    }
+    
+    .meta-group label {
+      display: block;
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Calculation Sections */
+    .calc-section {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .calc-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #2d7ff9;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 5px;
+      display: inline-block;
+      text-transform: uppercase;
+    }
+
+    label.input-label {
+      font-size: 13px;
+      color: #555;
+      display: block;
+      margin-top: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: white;
+      box-sizing: border-box;
+      margin-top: 4px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2d7ff9;
+      box-shadow: 0 0 0 2px rgba(45, 127, 249, 0.15);
+    }
+
+    /* Results Box */
+    .result-box {
+      margin-top: 10px;
+      padding: 10px;
+      background: #e8f0fe;
+      color: #1a73e8;
+      font-weight: bold;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: #2d7ff9;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+
+    button.calc-btn {
+      background: #6c757d;
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+      background: #1f66d1;
+    }
+
+    .secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    
+    .secondary:hover {
+      background: #d4d4d4;
+    }
+  </style>
 </head>
 
 <body>
 
-    <h2>Barrel – Acid Tin Bath</h2>
+  <div class="card">
+    <div class="card-header" id="headerTitle">
+      Acid Tin Bath
+    </div>
 
-    <label>Date:</label>
-    <input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
-    <label>Time:</label>
-    <input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
-    <br><br>
+    <div class="card-body">
+      
+      <div class="meta-row">
+        <div class="meta-group">
+          <label>Date</label>
+          <input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+        </div>
+        <div class="meta-group">
+          <label>Time</label>
+          <input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+        </div>
+      </div>
 
-    <div class="box">
-        <h3>Tin (Sn)</h3>
-        Sample Volume:<input id="sn_sample" value="2">
-        I₂ Concentration:<input id="i2_conc" value="0.05">
-        I₂ Volume:<input id="i2_vol">
-        <button onclick="calcTin()">Calculate Tin</button>
-        <div id="sn_result" style="display:none;"></div>
+      <div class="calc-section">
+        <div class="calc-title">Tin (Sn)</div>
+        
+        <label class="input-label">Sample Volume (ml)</label>
+        <input id="sn_sample" type="number" value="2">
+        
+        <label class="input-label">I₂ Concentration</label>
+        <input id="i2_conc" type="number" value="0.05">
+        
+        <label class="input-label">I₂ Volume (ml)</label>
+        <input id="i2_vol" type="number" placeholder="Enter Volume">
+        
+        <button class="calc-btn" onclick="calcTin()">Calculate Tin</button>
+        <div id="sn_result" class="result-box"></div>
         <input type="hidden" id="sn_final">
-    </div>
+      </div>
 
-    <div class="box">
-        <h3>Sulfuric Acid (H₂SO₄)</h3>
-        Sample Volume:<input id="sul_sample" value="5">
-        NaOH Concentration:<input id="naoh_conc" value="1">
-        NaOH Volume:<input id="naoh_vol">
-        <button onclick="calcSulfuric()">Calculate H₂SO₄</button>
-        <div id="sul_result" style="display:none;"></div>
+      <div class="calc-section">
+        <div class="calc-title">Sulfuric Acid (H₂SO₄)</div>
+        
+        <label class="input-label">Sample Volume (ml)</label>
+        <input id="sul_sample" type="number" value="5">
+        
+        <label class="input-label">NaOH Concentration</label>
+        <input id="naoh_conc" type="number" value="1">
+        
+        <label class="input-label">NaOH Volume (ml)</label>
+        <input id="naoh_vol" type="number" placeholder="Enter Volume">
+        
+        <button class="calc-btn" onclick="calcSulfuric()">Calculate H₂SO₄</button>
+        <div id="sul_result" class="result-box"></div>
         <input type="hidden" id="sul_final">
+      </div>
+
+      <div class="btn-row">
+        <button onclick="submitData()">Submit to Sheet</button>
+        <button onclick="goBack()" class="secondary">Previous</button>
+      </div>
+
     </div>
+  </div>
 
-    <button onclick="submitData()">Submit to Sheet</button>
+  <script>
+    // --- 1. Dynamic Header Logic ---
+    const params = new URLSearchParams(window.location.search);
+    const bathName = params.get("bath") || "Acid Tin Bath";
 
-    <script>
-        function formatDate(i) {
-            let v = i.value.replace(/\D/g, '');
-            if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
-            if (v.length >= 6) v = v.slice(0, 5) + '/' + v.slice(5, 9);
-            i.value = v;
-        }
-        function formatTime(i) {
-            let v = i.value.replace(/\D/g, '');
-            if (v.length >= 3) v = v.slice(0, 2) + ':' + v.slice(2, 4);
-            i.value = v;
-        }
+    // Smart Title
+    if (bathName !== "Acid Tin" && bathName !== "Acid Tin Bath") {
+        document.getElementById("headerTitle").innerText = "Acid Tin Bath – " + bathName;
+    } else {
+        document.getElementById("headerTitle").innerText = "Acid Tin Bath";
+    }
 
-        function calcTin() {
-            const r = i2_conc.value * i2_vol.value * 118.71 / sn_sample.value;
-            sn_final.value = r.toFixed(3);
-            sn_result.innerHTML = "Tin: " + sn_final.value + " g/L";
-            sn_result.style.display = "block";
-        }
+    // --- 2. Formatters ---
+    function formatDate(i){
+      let v = i.value.replace(/\D/g,'');
+      if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+      if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
+      i.value = v;
+    }
+    function formatTime(i){
+      let v = i.value.replace(/\D/g,'');
+      if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+      i.value = v;
+    }
 
-        function calcSulfuric() {
-            const r = naoh_conc.value * naoh_vol.value * 98 / (sul_sample.value * 2);
-            sul_final.value = r.toFixed(3);
-            sul_result.innerHTML = "H₂SO₄: " + sul_final.value + " g/L";
-            sul_result.style.display = "block";
-        }
+    // --- 3. Calculation Functions ---
+    function calcTin() {
+      const sample = parseFloat(document.getElementById('sn_sample').value);
+      const conc = parseFloat(document.getElementById('i2_conc').value);
+      const vol = parseFloat(document.getElementById('i2_vol').value);
 
-        function submitData() {
-            const data = {
-                sheet: "Chem_Barrel_AcidTin",
-                date: date.value,
-                time: time.value,
-                tin: sn_final.value,
-                sulfuric: sul_final.value
-            };
+      if(!sample || !conc || !vol) { alert("Please fill Tin fields"); return; }
 
-            fetch("YOUR_SCRIPT_URL", {
-                method: "POST",
-                body: JSON.stringify(data)
-            })
-                .then(r => r.text())
-                .then(t => alert("Saved"));
-        }
-    </script>
+      // Formula: conc * vol * 118.71 / sample
+      const r = (conc * vol * 118.71) / sample;
+      const final = r.toFixed(3);
+
+      const display = document.getElementById('sn_result');
+      display.style.display = 'block';
+      display.innerHTML = "Tin: " + final + " g/L";
+      document.getElementById('sn_final').value = final;
+    }
+
+    function calcSulfuric() {
+      const sample = parseFloat(document.getElementById('sul_sample').value);
+      const conc = parseFloat(document.getElementById('naoh_conc').value);
+      const vol = parseFloat(document.getElementById('naoh_vol').value);
+
+      if(!sample || !conc || !vol) { alert("Please fill Sulfuric Acid fields"); return; }
+
+      // Formula: conc * vol * 98 / (sample * 2)
+      const r = (conc * vol * 98) / (sample * 2);
+      const final = r.toFixed(3);
+
+      const display = document.getElementById('sul_result');
+      display.style.display = 'block';
+      display.innerHTML = "H₂SO₄: " + final + " g/L";
+      document.getElementById('sul_final').value = final;
+    }
+
+    // --- 4. Navigation & Submission ---
+    function goBack() {
+      window.history.back();
+    }
+
+    function submitData(){
+      // Optional safety check
+      if(!document.getElementById('sn_final').value && !document.getElementById('sul_final').value){
+        if(!confirm("No calculations done. Submit anyway?")) return;
+      }
+
+      const data = {
+        sheet: "Chem_Barrel_AcidTin", 
+        bath_name: bathName,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        tin: document.getElementById('sn_final').value,
+        sulfuric: document.getElementById('sul_final').value
+      };
+
+      console.log("Submitting:", data);
+
+      fetch("YOUR_SCRIPT_URL", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(r => r.text())
+      .then(t => alert("Saved for " + bathName))
+      .catch(e => alert("Error: " + e));
+    }
+  </script>
 
 </body>
-
 </html>
