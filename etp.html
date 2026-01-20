@@ -341,6 +341,7 @@
     }
 
     function submitData() {
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec";
       const errors = [];
       const dateVal = document.getElementById('date').value.trim();
       const timeVal = document.getElementById('time').value.trim();
@@ -375,31 +376,7 @@
         ec_out: document.getElementById('ec_out').value
       };
 
-      // ... inside submitData() ...
-
-      // 1. Paste your NEW Personal Script URL here
-      const scriptURL = "REPLACE_THIS_WITH_YOUR_NEW_PERSONAL_URL";
-
-      // 2. The "Force Send" code
-      fetch('https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec', {
-        method: "POST",
-        mode: "no-cors", // <--- THIS IS THE MAGIC FIX
-        headers: {
-          "Content-Type": "text/plain"
-        },
-        body: JSON.stringify(data)
-      })
-      .then(() => {
-        // With 'no-cors', we can't read the server response, 
-        // so we just assume it worked if no error occurred.
-        alert("Data sent! Check your Google Sheet.");
-        
-        // Optional: Clear inputs after save
-        // document.getElementById('ph_in').value = '';
-        // document.getElementById('ph_out').value = '';
-      })
-      .catch(e => alert("Error: " + e));
-    }
+      
 
     // Normalize on blur (helpful for quick typed values like 930 -> 09:30)
     document.getElementById('time').addEventListener('blur', function() {
@@ -418,9 +395,29 @@
         this.value = digits.slice(0,2) + '/' + digits.slice(2,4) + '/' + digits.slice(4);
       }
     });
-
+      
+fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors", // <--- THIS IS THE MAGIC FIX
+        headers: {
+          "Content-Type": "text/plain"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        // With 'no-cors', we can't read the server response, 
+        // so we just assume it worked if no error occurred.
+        alert("Data sent! Check your Google Sheet.");
+        
+        // Optional: Clear inputs after save
+        // document.getElementById('ph_in').value = '';
+        // document.getElementById('ph_out').value = '';
+      })
+      .catch(e => alert("Error: " + e));
+    }
   </script>
 
 </body>
 </html>
+
 
