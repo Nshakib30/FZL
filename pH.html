@@ -1,236 +1,313 @@
-<style>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bath pH Report</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
     body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  padding: 10px;
-}
-
-
-    .card {
-  width: 100%;
-  background: white;
-  border-radius: 0;
-  padding: 12px;
-  box-shadow: none;
-}
-
-
-    h2 {
-      text-align: center;
-      margin-bottom: 15px;
-      color: #333;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef2f5;
+      
+      /* Vertical Centering & Width Fitting */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      
+      /* Minimal padding to maximize width on mobile */
+      padding: 8px;
+      box-sizing: border-box;
     }
 
-    .top-inputs {
+    .card {
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      background: #2d7ff9;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 15px;
+    }
+
+    /* Date/Time Section */
+    .meta-row {
       display: flex;
       gap: 10px;
       margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
     }
-
-    .top-inputs div {
+    
+    .meta-group {
       flex: 1;
     }
-
-    label {
-      font-size: 14px;
-      color: #444;
+    
+    .meta-group label {
+      display: block;
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
     }
 
-    input {
-      width: 100%;
-      padding: 8px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-top: 4px;
-    }
-
+    /* Table Styling */
     table {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 14px;
+      border-collapse: separate;
+      border-spacing: 0 8px; /* Spacing between rows */
     }
 
     th {
-      background: #2d7ff9;
-      color: white;
-      padding: 10px;
+      text-align: center;
+      color: #666;
+      font-size: 11px;
+      padding-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    th:first-child, td:first-child {
+      text-align: left;
+      padding-left: 2px;
     }
 
     td {
-      border: 1px solid black;
-      padding: 8px;
+      padding: 0 2px;
+      vertical-align: middle;
+    }
+
+    td:first-child {
+      font-weight: 600;
+      color: #333;
+      font-size: 13px;
+      width: 32%;
+    }
+
+    /* Input Styling */
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #f9f9f9;
+      box-sizing: border-box;
       text-align: center;
     }
 
-    td input {
-      width: 90%;
-      border-radius: 5px;
+    input:focus {
+      outline: none;
+      border-color: #2d7ff9;
+      background: white;
+      box-shadow: 0 0 0 2px rgba(45, 127, 249, 0.15);
+    }
+
+    .dash {
+      text-align: center;
+      color: #ccc;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
     }
 
     button {
-      width: 100%;
-      margin-top: 20px;
+      flex: 1;
       padding: 14px;
       font-size: 16px;
+      font-weight: 600;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background: #2d7ff9;
       color: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
       cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background 0.2s;
     }
 
     button:active {
       transform: scale(0.98);
       background: #1f66d1;
     }
+
+    .secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
     
-    .btn-row {
-  display: flex;
-  gap: 10px;
-}
-
-.secondary {
-  background: #aaa;
-  color: black;
-}
-
-.secondary:active {
-  background: #888;
-}
-
+    .secondary:hover {
+      background: #d4d4d4;
+    }
   </style>
 </head>
 
 <body>
+
   <div class="card">
-    <h2>Bath pH Report</h2>
+    <div class="card-header">
+      Bath pH Report
+    </div>
 
-<label>Date:</label>
-<input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+    <div class="card-body">
+      
+      <div class="meta-row">
+        <div class="meta-group">
+          <label>Date</label>
+          <input id="date" type="text" placeholder="dd/mm/yyyy" maxlength="10" oninput="formatDate(this)">
+        </div>
+        <div class="meta-group">
+          <label>Time</label>
+          <input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
+        </div>
+      </div>
 
-<label>Time:</label>
-<input id="time" type="text" placeholder="hh:mm" maxlength="5" oninput="formatTime(this)">
-<br><br>
+      <table>
+        <thead>
+          <tr>
+            <th>Bath</th>
+            <th>Barrel</th>
+            <th>Hanger</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Copper</td>
+            <td><input id="copper_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+            <td><input id="copper_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
 
+          <tr>
+            <td>Shiny Copper</td>
+            <td><input id="shiny_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+            <td class="dash">-</td>
+          </tr>
 
-<br><br>
+          <tr>
+            <td>Golden 1</td>
+            <td><input id="gold1_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+            <td rowspan="2"><input id="gold_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
+          <tr>
+            <td>Golden 2</td>
+            <td><input id="gold2_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
 
+          <tr>
+            <td>Gun Metal</td>
+            <td><input id="gun_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+            <td><input id="gun_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
 
-<table>
-  <tr>
-    <th>Bath</th>
-    <th>Barrel</th>
-    <th>Hanger</th>
-  </tr>
+          <tr>
+            <td>White Bronze 1</td>
+            <td><input id="wb1_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+            <td rowspan="3"><input id="wb_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
+          <tr>
+            <td>White Bronze 2</td>
+            <td><input id="wb2_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
+          <tr>
+            <td>White Bronze 3</td>
+            <td><input id="wb3_barrel" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
 
-  <tr>
-    <td>Copper</td>
-    <td><input id="copper_barrel"></td>
-    <td><input id="copper_hanger"></td>
-  </tr>
+          <tr>
+            <td>Rose Gold</td>
+            <td class="dash">-</td>
+            <td><input id="rose_hanger" type="number" step="0.01" onchange="formatTwoDecimals(this)"></td>
+          </tr>
+        </tbody>
+      </table>
 
-  <tr>
-    <td>Shiny Copper</td>
-    <td><input id="shiny_barrel"></td>
-    <td>-</td>
-  </tr>
+      <div class="btn-row">
+        <button onclick="submitData()">Submit</button>
+        <button onclick="goHome()" class="secondary">Home</button>
+      </div>
 
-  <tr>
-    <td>Golden 1</td>
-    <td><input id="gold1_barrel"></td>
-    <td rowspan="2"><input id="gold_hanger"></td>
-  </tr>
-  <tr>
-    <td>Golden 2</td>
-    <td><input id="gold2_barrel"></td>
-  </tr>
+    </div>
+  </div>
 
-  <tr>
-    <td>Gun Metal</td>
-    <td><input id="gun_barrel"></td>
-    <td><input id="gun_hanger"></td>
-  </tr>
+  <script>
+    // --- Formatting Logic ---
+    function formatTwoDecimals(input) {
+      if (input.value !== "") {
+        input.value = parseFloat(input.value).toFixed(2);
+      }
+    }
 
-  <tr>
-    <td>White Bronze 1</td>
-    <td><input id="wb1_barrel"></td>
-    <td rowspan="3"><input id="wb_hanger"></td>
-  </tr>
-  <tr>
-    <td>White Bronze 2</td>
-    <td><input id="wb2_barrel"></td>
-  </tr>
-  <tr>
-    <td>White Bronze 3</td>
-    <td><input id="wb3_barrel"></td>
-  </tr>
+    function formatDate(input){
+      let v = input.value.replace(/\D/g,'');
+      if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+      if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
+      input.value = v;
+    }
 
-  <tr>
-    <td>Rose Gold</td>
-    <td>-</td>
-    <td><input id="rose_hanger"></td>
-  </tr>
-</table>
+    function formatTime(input){
+      let v = input.value.replace(/\D/g,'');
+      if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+      input.value = v;
+    }
 
+    // --- Navigation & Submission ---
+    function goHome(){
+      window.location.href = "index.html";
+    }
 
+    function submitData(){
+      const data = {
+        sheet: "Bath_pH",
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        copper_barrel: document.getElementById('copper_barrel').value,
+        copper_hanger: document.getElementById('copper_hanger').value,
+        shiny_barrel: document.getElementById('shiny_barrel').value,
+        gold1_barrel: document.getElementById('gold1_barrel').value,
+        gold2_barrel: document.getElementById('gold2_barrel').value,
+        gold_hanger: document.getElementById('gold_hanger').value,
+        gun_barrel: document.getElementById('gun_barrel').value,
+        gun_hanger: document.getElementById('gun_hanger').value,
+        wb1_barrel: document.getElementById('wb1_barrel').value,
+        wb2_barrel: document.getElementById('wb2_barrel').value,
+        wb3_barrel: document.getElementById('wb3_barrel').value,
+        wb_hanger: document.getElementById('wb_hanger').value,
+        rose_hanger: document.getElementById('rose_hanger').value
+      };
 
+      console.log("Submitting:", data);
 
-<div class="btn-row">
-  <button onclick="submitData()">Submit</button>
-  <button onclick="goHome()" class="secondary">Home</button>
-</div>
+      fetch("YOUR_SCRIPT_URL", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(r => r.text())
+      .then(t => alert("Saved successfully!"))
+      .catch(e => alert("Error: " + e));
+    }
+  </script>
 
-
-<script>
-
-function formatDate(input){
-  let v = input.value.replace(/\D/g,'');
-  if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
-  if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
-  input.value = v;
-}
-
-function formatTime(input){
-  let v = input.value.replace(/\D/g,'');
-  if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
-  input.value = v;
-}
-
-function submitData(){
-  const data = {
-    sheet:"Bath_pH",
-    date: date.value,
-    time: time.value,
-    copper_barrel:copper_barrel.value,
-    copper_hanger:copper_hanger.value,
-    shiny_barrel:shiny_barrel.value,
-    gold1_barrel:gold1_barrel.value,
-    gold2_barrel:gold2_barrel.value,
-    gold_hanger:gold_hanger.value,
-    gun_barrel:gun_barrel.value,
-    gun_hanger:gun_hanger.value,
-    wb1_barrel:wb1_barrel.value,
-    wb2_barrel:wb2_barrel.value,
-    wb3_barrel:wb3_barrel.value,
-    wb_hanger:wb_hanger.value,
-    rose_hanger:rose_hanger.value
-  };
-
-
-  fetch("YOUR_SCRIPT_URL",{
-    method:"POST",
-    body:JSON.stringify(data)
-  })
-  .then(r=>r.text())
-  .then(t=>alert("Saved"));
-}
-
-function goHome(){
-  window.location.href = "index.html";
-}
-
-</script>
+</body>
+</html>
