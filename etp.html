@@ -375,15 +375,28 @@
         ec_out: document.getElementById('ec_out').value
       };
 
-      fetch("https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec", {
+      // ... inside submitData() ...
+
+      // 1. Paste your NEW Personal Script URL here
+      const scriptURL = "REPLACE_THIS_WITH_YOUR_NEW_PERSONAL_URL";
+
+      // 2. The "Force Send" code
+      fetch('https://script.google.com/macros/s/AKfycbzZZd9byohfZ8HPzLAbp87dTqxy70t-ob8ke8el6ozEj0gTkrkT4J7jfBGZU0FZRQmI/exec', {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
+        mode: "no-cors", // <--- THIS IS THE MAGIC FIX
+        headers: {
+          "Content-Type": "text/plain"
+        },
         body: JSON.stringify(data)
       })
-      .then(r => r.text())
-      .then(t => {
-        alert("Saved successfully!");
-        // Optionally clear form or leave as-is
+      .then(() => {
+        // With 'no-cors', we can't read the server response, 
+        // so we just assume it worked if no error occurred.
+        alert("Data sent! Check your Google Sheet.");
+        
+        // Optional: Clear inputs after save
+        // document.getElementById('ph_in').value = '';
+        // document.getElementById('ph_out').value = '';
       })
       .catch(e => alert("Error: " + e));
     }
@@ -410,3 +423,4 @@
 
 </body>
 </html>
+
