@@ -2,14 +2,124 @@
 <html>
 <head>
   <title>Bath Density</title>
-  <style>
-    table { width:100%; border-collapse:collapse; text-align:center; }
-    th, td { border:1px solid black; padding:8px; }
-    input { width:90%; font-size:14px; }
-    button { width:100%; padding:15px; font-size:18px; margin-top:15px; }
+<style>
+   body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  padding: 10px;
+}
+
+
+
+  .card {
+  width: 95%;
+  max-width: 600px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .top-inputs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .top-inputs div {
+      flex: 1;
+    }
+
+    label {
+      font-size: 14px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th {
+      background: #2d7ff9;
+      color: white;
+      padding: 10px;
+    }
+
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+
+    td input {
+      width: 90%;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #2d7ff9;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+    
+    .btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-row button {
+  flex: 1;
+}
+
+
+    button:active {
+      transform: scale(0.98);
+      background: #1f66d1;
+    }
+    
+    .btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.secondary {
+  background: #aaa;
+  color: black;
+}
+
+.secondary:active {
+  background: #888;
+}
+
   </style>
 </head>
-<body>
 
 <h2>Bath Density Report</h2>
 
@@ -88,7 +198,12 @@
   </tr>
 </table>
 
-<button onclick="submitData()">Submit</button>
+<div class="btn-row">
+  <button onclick="submitData()">Submit</button>
+  <button onclick="goHome()" class="secondary">Home</button>
+</div>
+
+
 
 <script>
 function formatDate(input){
@@ -102,6 +217,10 @@ function formatTime(input){
   let v = input.value.replace(/\D/g,'');
   if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
   input.value = v;
+}
+
+function goHome(){
+  window.location.href = "index.html";
 }
 
 function submitData(){
