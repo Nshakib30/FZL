@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chemical Composition</title>
+  <title>Copper Bath Analysis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -40,6 +40,8 @@
 
     .card-body {
       padding: 15px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     /* Date/Time Section */
@@ -81,6 +83,7 @@
       border-bottom: 2px solid #e0e0e0;
       padding-bottom: 5px;
       display: inline-block;
+      text-transform: uppercase;
     }
 
     label.input-label {
@@ -107,7 +110,7 @@
       box-shadow: 0 0 0 2px rgba(45, 127, 249, 0.15);
     }
 
-    /* Results */
+    /* Results Box */
     .result-box {
       margin-top: 10px;
       padding: 10px;
@@ -117,7 +120,7 @@
       border-radius: 6px;
       text-align: center;
       font-size: 14px;
-      display: none; /* Hidden until calculated */
+      display: none;
     }
 
     /* Buttons */
@@ -143,7 +146,7 @@
     }
 
     button.calc-btn {
-      background: #6c757d; /* Grey for intermediate calc buttons */
+      background: #6c757d;
       font-size: 14px;
       padding: 10px;
     }
@@ -168,7 +171,7 @@
 
   <div class="card">
     <div class="card-header" id="headerTitle">
-      Calculating...
+      Copper Bath
     </div>
 
     <div class="card-body">
@@ -185,34 +188,34 @@
       </div>
 
       <div class="calc-section">
-        <div class="calc-title">COPPER CALCULATION</div>
+        <div class="calc-title">Copper Calculation</div>
         
         <label class="input-label">Sample Volume (ml)</label>
         <input id="cu_sample" type="number" value="2">
-
-        <label class="input-label">EDTA Conc. (N)</label>
+        
+        <label class="input-label">EDTA Conc.</label>
         <input id="edta_conc" type="number" value="0.01">
-
+        
         <label class="input-label">EDTA Volume (ml)</label>
         <input id="edta_vol" type="number" placeholder="Enter Volume">
-
+        
         <button class="calc-btn" onclick="calcCopper()">Calculate Copper</button>
         <div id="cu_result_display" class="result-box"></div>
         <input type="hidden" id="cu_final">
       </div>
 
       <div class="calc-section">
-        <div class="calc-title">FREE NaCN CALCULATION</div>
+        <div class="calc-title">Free NaCN Calculation</div>
         
         <label class="input-label">Sample Volume (ml)</label>
         <input id="cn_sample" type="number" value="2">
-
-        <label class="input-label">AgNO3 Conc. (N)</label>
+        
+        <label class="input-label">AgNO3 Conc.</label>
         <input id="agno3_conc" type="number" value="0.01">
-
+        
         <label class="input-label">AgNO3 Volume (ml)</label>
         <input id="agno3_vol" type="number" placeholder="Enter Volume">
-
+        
         <button class="calc-btn" onclick="calcNaCN()">Calculate NaCN</button>
         <div id="cn_result_display" class="result-box"></div>
         <input type="hidden" id="cn_final">
@@ -227,61 +230,58 @@
   </div>
 
   <script>
-    // 1. DYNAMIC TITLE LOGIC
-    // This runs as soon as the page loads
-    const urlParams = new URLSearchParams(window.location.search);
-    // Get 'bath' from URL, default to 'Copper Bath' if missing
-    const currentBath = urlParams.get('bath') || 'Copper Bath'; 
-    
-    // Set the blue header text
-    document.getElementById('headerTitle').innerText = currentBath;
+    // --- 1. Dynamic Header Logic ---
+    const params = new URLSearchParams(window.location.search);
+    const bathName = params.get("bath") || "Copper Bath";
 
-    // --- Formatting Logic ---
-    function formatDate(input){
-      let v = input.value.replace(/\D/g,'');
+    // Smart Title: If name is NOT just "Copper" or "Copper Bath", show full details
+    if (bathName !== "Copper" && bathName !== "Copper Bath") {
+        document.getElementById("headerTitle").innerText = "Copper Bath – " + bathName;
+    } else {
+        document.getElementById("headerTitle").innerText = "Copper Bath";
+    }
+
+    // --- 2. Formatters ---
+    function formatDate(i){
+      let v = i.value.replace(/\D/g,'');
       if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
       if(v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5,9);
-      input.value = v;
+      i.value = v;
     }
-
-    function formatTime(input){
-      let v = input.value.replace(/\D/g,'');
+    function formatTime(i){
+      let v = i.value.replace(/\D/g,'');
       if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
-      input.value = v;
+      i.value = v;
     }
 
-    // --- Calculation Logic ---
-    function calcCopper(){
+    // --- 3. Calculation Functions ---
+    function calcCopper() {
       const sample = parseFloat(document.getElementById('cu_sample').value);
       const conc = parseFloat(document.getElementById('edta_conc').value);
       const vol = parseFloat(document.getElementById('edta_vol').value);
 
-      if(!sample || !conc || !vol) {
-        alert("Please fill all Copper fields");
-        return;
-      }
+      if(!sample || !conc || !vol) { alert("Please fill Copper fields"); return; }
 
-      const result = (conc * vol * 63.55) / sample;
-      const final = result.toFixed(3); // Keeping 3 decimals as per your request
+      // Formula: conc * vol * 63.55 / sample
+      const r = (conc * vol * 63.55) / sample;
+      const final = r.toFixed(3);
 
       const display = document.getElementById('cu_result_display');
       display.style.display = 'block';
-      display.innerHTML = "Copper Content: " + final + " g/L";
+      display.innerHTML = "Copper: " + final + " g/L";
       document.getElementById('cu_final').value = final;
     }
 
-    function calcNaCN(){
+    function calcNaCN() {
       const sample = parseFloat(document.getElementById('cn_sample').value);
       const conc = parseFloat(document.getElementById('agno3_conc').value);
       const vol = parseFloat(document.getElementById('agno3_vol').value);
 
-      if(!sample || !conc || !vol) {
-        alert("Please fill all NaCN fields");
-        return;
-      }
+      if(!sample || !conc || !vol) { alert("Please fill NaCN fields"); return; }
 
-      const result = (conc * vol * 49 * 2) / sample;
-      const final = result.toFixed(3);
+      // Formula: conc * vol * 49 * 2 / sample
+      const r = (conc * vol * 49 * 2) / sample;
+      const final = r.toFixed(3);
 
       const display = document.getElementById('cn_result_display');
       display.style.display = 'block';
@@ -289,48 +289,34 @@
       document.getElementById('cn_final').value = final;
     }
 
-    // --- Navigation & Submission ---
-    
+    // --- 4. Navigation & Submission ---
     function goBack() {
       window.history.back();
     }
 
     function submitData(){
-      // Check if calculations are done
+      // Optional safety check
       if(!document.getElementById('cu_final').value && !document.getElementById('cn_final').value){
-        alert("Please calculate values before submitting.");
-        return;
+        if(!confirm("No calculations done. Submit anyway?")) return;
       }
 
       const data = {
-        // This sends the specific bath name to your Google Sheet
-        sheet_name: currentBath, 
-        
-        // Or if you use "sheet" to determine the tab name:
-        sheet: "Chem_" + currentBath.replace(/\s+/g, '_'), 
-        
+        sheet: "Chem_Copper", // Matches your sheet tab name
+        bath_name: bathName,  // Sends "Shiny Copper" etc.
         date: document.getElementById('date').value,
         time: document.getElementById('time').value,
-
-        cu_sample: document.getElementById('cu_sample').value,
-        edta_conc: document.getElementById('edta_conc').value,
-        edta_vol: document.getElementById('edta_vol').value,
-        copper_result: document.getElementById('cu_final').value,
-
-        cn_sample: document.getElementById('cn_sample').value,
-        agno3_conc: document.getElementById('agno3_conc').value,
-        agno3_vol: document.getElementById('agno3_vol').value,
-        nacn_result: document.getElementById('cn_final').value
+        copper: document.getElementById('cu_final').value,
+        nacn: document.getElementById('cn_final').value
       };
 
-      console.log("Submitting for: " + currentBath, data);
+      console.log("Submitting:", data);
 
       fetch("YOUR_SCRIPT_URL", {
         method: "POST",
         body: JSON.stringify(data)
       })
       .then(r => r.text())
-      .then(t => alert("Saved to Sheet for " + currentBath))
+      .then(t => alert("Saved for " + bathName))
       .catch(e => alert("Error: " + e));
     }
   </script>
